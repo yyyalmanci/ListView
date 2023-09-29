@@ -1,7 +1,8 @@
-package com.yyy.listview
+package com.yyy.listview.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.yyy.listview.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
