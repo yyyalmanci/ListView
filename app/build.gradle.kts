@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.navigation.fragment)
 
     implementation(libs.coroutines)
+
+    //loging
+    implementation(libs.timber)
 }
