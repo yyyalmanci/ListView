@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.application)
@@ -27,6 +29,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String", "POSTS_BASE_URL", gradleLocalProperties(
+                    rootDir
+                ).getProperty("posts_base_url")
+            )
+        }
+        debug {
+            buildConfigField(
+                "String", "POSTS_BASE_URL", gradleLocalProperties(
+                    rootDir
+                ).getProperty("posts_base_url")
+            )
         }
     }
     compileOptions {
@@ -35,6 +49,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "18"
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
