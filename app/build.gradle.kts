@@ -90,4 +90,9 @@ dependencies {
 
     //loging
     implementation(libs.timber)
+
+    androidTestImplementation(libs.and.core.testing)
+    androidTestImplementation(libs.truth.assertion)
+    androidTestImplementation(libs.turbine.testing)
+
 }

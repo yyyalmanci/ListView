@@ -19,7 +19,7 @@ interface PostDao {
     @Query("UPDATE posts SET description = :description WHERE id = :id")
     suspend fun updateDescription(description: String, id: Int)
 
-    @Query("UPDATE posts SET description = :description WHERE id = :id")
-    suspend fun updateTitle(description: String, id: Int)
+    @Query("UPDATE posts SET title = :title WHERE id = :id")
+    suspend fun updateTitle(title: String, id: Int)
 
 }
