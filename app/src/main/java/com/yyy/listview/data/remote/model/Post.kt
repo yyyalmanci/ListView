@@ -1,6 +1,7 @@
 package com.yyy.listview.data.remote.model
 
 import com.google.gson.annotations.SerializedName
+import com.yyy.listview.data.local.entity.PostEntity
 
 data class Post(
     @SerializedName("userId")
@@ -11,4 +12,8 @@ data class Post(
     val title: String,
     @SerializedName("body")
     val body: String
+)
+
+fun Post.toPostEntity() = PostEntity(
+    id, title, body
 )
