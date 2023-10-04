@@ -9,4 +9,8 @@ interface PostsRepository {
     suspend fun fetchPosts(): Resource<Unit>
 
     fun getPosts(): Flow<List<PostEntity>>
+
+    suspend fun updatePostTitle(title: String, id: Int)
+
+    suspend fun updateDescription(description: String, id: Int)
 }

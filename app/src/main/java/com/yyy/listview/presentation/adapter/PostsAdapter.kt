@@ -14,9 +14,8 @@ import com.yyy.listview.presentation.adapter.diffutil.PostDiffItemCallback
 
 class PostsAdapter constructor(
     private val onItemClickListener: (
-        id: Int,
-        title: String,
-        desc: String
+        model: PostDomainModel,
+        imageUrl: String
     ) -> Unit,
 ) : ListAdapter<PostDomainModel, PostsAdapter.PostViewHolder>(PostDiffItemCallback()) {
 
@@ -36,10 +35,13 @@ class PostsAdapter constructor(
                 title.text = item.title
                 desc.text = item.description
                 val imageUrl = "https://picsum.photos/300/300?random=$${adapterPosition}&grayscale"
-                image.load(imageUrl){
+                image.load(imageUrl) {
                     crossfade(true)
                     placeholder(R.drawable.ic_launcher_background)
                     transformations(CircleCropTransformation())
+                }
+                root.setOnClickListener {
+                    onItemClickListener(item, imageUrl)
                 }
             }
         }

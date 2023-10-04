@@ -16,10 +16,10 @@ interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPosts(posts: List<PostEntity>)
 
-    @Query("UPDATE posts SET description = :description WHERE id = :id")
-    suspend fun updateDescription(description: String, id: Int)
+    @Query("UPDATE posts SET updatedDescription = :description, isDescriptionUpdated = :isUpdated  WHERE id = :id")
+    suspend fun updateDescription(description: String, id: Int, isUpdated: Boolean = true)
 
-    @Query("UPDATE posts SET title = :title WHERE id = :id")
-    suspend fun updateTitle(title: String, id: Int)
+    @Query("UPDATE posts SET updatedTitle = :title, isTitleUpdated = :isUpdated WHERE id = :id")
+    suspend fun updateTitle(title: String, id: Int, isUpdated: Boolean = true)
 
 }

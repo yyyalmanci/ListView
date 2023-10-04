@@ -11,15 +11,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.yyy.listview.R
 import com.yyy.listview.databinding.FragmentPostListBinding
+import com.yyy.listview.domain.model.PostDomainModel
 import com.yyy.listview.presentation.adapter.PostsAdapter
 import com.yyy.listview.presentation.model.PostListUiState
-import com.yyy.listview.presentation.viewmodel.PostListViewModel
+import com.yyy.listview.presentation.viewmodel.PostsViewModel
 import com.yyy.listview.utils.DividerItemDecorator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,7 +33,7 @@ class PostListFragment() : Fragment() {
     private var _binding: FragmentPostListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PostListViewModel by viewModels()
+    private val viewModel: PostsViewModel by viewModels()
 
     private val itemTouchHelper by lazy {
         ItemTouchHelper(
@@ -88,40 +90,45 @@ class PostListFragment() : Fragment() {
     }
 
     private fun subscribeEvents() {
-      viewModel.apply {
-          lifecycleScope.launch {
-              viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                  launch {
-                      postListFlow.collect {
-                          when (it) {
-                              is PostListUiState.Success -> {
-                                  (binding.postList.adapter as PostsAdapter).submitList(it.postList)
-                              }
-                              is PostListUiState.Loading -> {
-                                  //TODO show loading ui
-                              }
-                              else -> {}
-                          }
-                      }
-                  }
-                  launch {
-                      connectionError.collect {
-                          if (it) {
-                              Toast.makeText(
-                                  context,
-                                  getString(R.string.error_connection_list),
-                                  Toast.LENGTH_SHORT
-                              ).show()
-                          }
-                      }
-                  }
-              }
-          }
-      }
+        viewModel.apply {
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    launch {
+                        postListFlow.collect {
+                            when (it) {
+                                is PostListUiState.Success -> {
+                                    (binding.postList.adapter as PostsAdapter).submitList(it.postList)
+                                }
+                                is PostListUiState.Loading -> {
+                                    //TODO show loading ui
+                                }
+                                else -> {}
+                            }
+                        }
+                    }
+                    launch {
+                        connectionError.collect {
+                            if (it) {
+                                Toast.makeText(
+                                    context,
+                                    getString(R.string.error_connection_list),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    private fun navigateToDetailFragment(id: Int, title: String, desc: String) {
-
+    private fun navigateToDetailFragment(model: PostDomainModel, imageUrl: String) {
+        findNavController().navigate(
+            PostListFragmentDirections.actionPostListFragmentToDetailFragment(
+                model,
+                imageUrl
+            )
+        )
     }
 
 }

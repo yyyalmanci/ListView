@@ -9,7 +9,19 @@ data class PostEntity(
     @PrimaryKey
     val id: Int,
     val title: String,
-    val description: String
+    val description: String,
+    val updatedTitle: String,
+    val isTitleUpdated: Boolean = false,
+    val updatedDescription: String,
+    val isDescriptionUpdated: Boolean = false,
 )
 
-fun PostEntity.toPostDomainModel() = PostDomainModel(id, title, description)
+fun PostEntity.toPostDomainModel() = PostDomainModel(
+    id,
+    title,
+    description,
+    updatedTitle,
+    isTitleUpdated,
+    updatedDescription,
+    isDescriptionUpdated
+)

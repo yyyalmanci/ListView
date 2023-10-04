@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yyy.listview.domain.FetchPostsUseCase
 import com.yyy.listview.domain.GetPostsUseCase
+import com.yyy.listview.domain.UpdateDescriptionUseCase
+import com.yyy.listview.domain.UpdatePostTitleUseCase
 import com.yyy.listview.presentation.model.PostListUiState
 import com.yyy.listview.utils.CONNECTION_ERROR
 import com.yyy.listview.utils.Resource
@@ -17,9 +19,11 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class PostListViewModel @Inject constructor(
+class PostsViewModel @Inject constructor(
     private val fetchPostsUseCase: FetchPostsUseCase,
-    private val getPostsUseCase: GetPostsUseCase
+    private val getPostsUseCase: GetPostsUseCase,
+    private val updatePostTitleUseCase: UpdatePostTitleUseCase,
+    private val updateDescriptionUseCase: UpdateDescriptionUseCase
 ) : ViewModel() {
 
     private var _postListFlow = MutableStateFlow<PostListUiState>(PostListUiState.Idle)
@@ -33,7 +37,7 @@ class PostListViewModel @Inject constructor(
             when (val responsePosts = fetchPostsUseCase()) {
                 is Resource.Failure -> {
                     Timber.d("error while fetching post list ${responsePosts.throwable.message}")
-                    if (responsePosts.throwable.message == CONNECTION_ERROR){
+                    if (responsePosts.throwable.message == CONNECTION_ERROR) {
                         _connectionError.emit(true)
                     }
                 }
@@ -57,6 +61,18 @@ class PostListViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun updateTitle(title: String, id: Int) {
+        viewModelScope.launch {
+            updatePostTitleUseCase(title, id)
+        }
+    }
+
+    fun updateDescription(description: String, id: Int) {
+        viewModelScope.launch {
+            updateDescriptionUseCase(description, id)
         }
     }
 }
