@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.navigation.fragment)
 
     implementation(libs.coroutines)
+    implementation(libs.coroutines.test)
 
     implementation(libs.coil)
 
@@ -99,5 +100,7 @@ dependencies {
     androidTestImplementation(libs.and.core.testing)
     androidTestImplementation(libs.truth.assertion)
     androidTestImplementation(libs.turbine.testing)
+    testImplementation(libs.truth.assertion)
+
 
 }
