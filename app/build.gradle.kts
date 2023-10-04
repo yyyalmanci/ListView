@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias (libs.plugins.kotlin.parcelize)
+    alias (libs.plugins.safe.args)
 }
 
 android {

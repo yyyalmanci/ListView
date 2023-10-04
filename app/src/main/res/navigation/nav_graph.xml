@@ -7,5 +7,20 @@
     <fragment
         android:id="@+id/postListFragment"
         android:name="com.yyy.listview.presentation.fragment.PostListFragment"
-        android:label="PostListFragment" />
+        android:label="PostListFragment" >
+        <action
+            android:id="@+id/action_postListFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.yyy.listview.presentation.fragment.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="postDetail"
+            app:argType="com.yyy.listview.domain.model.PostDomainModel" />
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+    </fragment>
 </navigation>

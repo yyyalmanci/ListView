@@ -8,4 +8,8 @@ interface LocalDataSource {
     fun getPostListFlow(): Flow<List<PostEntity>>
 
     suspend fun insertPosts(posts: List<PostEntity>)
+
+    suspend fun updatePostTitle(title: String, id: Int)
+
+    suspend fun updateDescription(description: String, id: Int)
 }

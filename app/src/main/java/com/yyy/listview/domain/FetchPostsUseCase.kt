@@ -8,6 +8,6 @@ class FetchPostsUseCase @Inject constructor(
     private val postsRepository: PostsRepository
 ) {
 
-   suspend operator fun invoke(): Resource<Unit> =
+    suspend operator fun invoke(): Resource<Unit> =
         postsRepository.fetchPosts()
 }

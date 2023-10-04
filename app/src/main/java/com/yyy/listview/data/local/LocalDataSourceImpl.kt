@@ -12,4 +12,12 @@ class LocalDataSourceImpl @Inject constructor(private val dao: PostDao) : LocalD
     override suspend fun insertPosts(posts: List<PostEntity>) {
         dao.insertPosts(posts)
     }
+
+    override suspend fun updatePostTitle(title: String, id: Int) {
+        dao.updateTitle(title, id)
+    }
+
+    override suspend fun updateDescription(description: String, id: Int) {
+        dao.updateDescription(description, id)
+    }
 }

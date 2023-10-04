@@ -7,9 +7,11 @@ import com.yyy.listview.data.local.entity.PostEntity
 import com.yyy.listview.data.remote.RemoteDataSource
 import com.yyy.listview.data.remote.model.toPostEntity
 import com.yyy.listview.utils.CONNECTION_ERROR
+import com.yyy.listview.utils.EMPTY_STRING
 import com.yyy.listview.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.net.UnknownHostException
@@ -27,10 +29,24 @@ class PostsRepositoryImpl @Inject constructor(
                 val response = remoteDataSource.fetchPostList()
                 if (response.isSuccessful) {
                     response.body()?.let { postsRemoteList ->
-                        val listPostEntity = postsRemoteList.map {
+                        val remotePosts = postsRemoteList.map {
                             it.toPostEntity()
                         }
-                        localDataSource.insertPosts(listPostEntity)
+                        val localPostsMap: Map<Int, PostEntity> =
+                            localDataSource.getPostListFlow().first().associateBy { it.id }
+                        val upToDatePosts = remotePosts.map { entity ->
+                            entity.copy(
+                                isDescriptionUpdated = localPostsMap[entity.id]?.isDescriptionUpdated
+                                    ?: false,
+                                isTitleUpdated = localPostsMap[entity.id]?.isTitleUpdated
+                                    ?: false,
+                                updatedDescription = localPostsMap[entity.id]?.updatedDescription
+                                    ?: EMPTY_STRING,
+                                updatedTitle = localPostsMap[entity.id]?.updatedTitle
+                                    ?: EMPTY_STRING
+                            )
+                        }
+                        localDataSource.insertPosts(upToDatePosts)
                         Resource.Success(Unit)
                     } ?: Resource.Failure(Throwable("Post List Empty"))
                 } else {
@@ -48,6 +64,18 @@ class PostsRepositoryImpl @Inject constructor(
 
     override fun getPosts(): Flow<List<PostEntity>> {
         return localDataSource.getPostListFlow()
+    }
+
+    override suspend fun updatePostTitle(title: String, id: Int) {
+        withContext(ioDispatcher) {
+            localDataSource.updatePostTitle(title, id)
+        }
+    }
+
+    override suspend fun updateDescription(description: String, id: Int) {
+        withContext(ioDispatcher) {
+            localDataSource.updateDescription(description, id)
+        }
     }
 
 }

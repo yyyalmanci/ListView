@@ -22,6 +22,7 @@ core-testing-version = "2.2.0"
 truth-version = "1.1.4"
 turbine-version = "0.9.0"
 coil-version = "2.4.0"
+kotlingPlugin = "1.8.20"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -56,6 +57,9 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-vers" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlingPlugin" }
+safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+
 
 [bundles]
 
