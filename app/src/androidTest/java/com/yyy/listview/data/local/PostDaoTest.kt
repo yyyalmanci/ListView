@@ -6,8 +6,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import app.cash.turbine.test
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import com.yyy.listview.data.local.entity.PostEntity
+import com.yyy.listview.utils.EMPTY_STRING
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -38,11 +39,19 @@ class PostDaoTest {
                 1,
                 "title1",
                 "body1",
+                updatedTitle = "updatedtitle",
+                isTitleUpdated = true,
+                updatedDescription = "updateddesc",
+                isDescriptionUpdated = true
             ),
             PostEntity(
                 2,
                 "title2",
                 "body2",
+                updatedTitle = EMPTY_STRING,
+                isTitleUpdated = false,
+                updatedDescription = EMPTY_STRING,
+                isDescriptionUpdated = false
             )
         )
     }
@@ -56,8 +65,8 @@ class PostDaoTest {
 
         postDao.getPostListFlow().test {
             val postList = awaitItem()
-            Truth.assertThat(true).isEqualTo(postList.contains(postList[0]))
-            Truth.assertThat(true).isEqualTo(postList.contains(postList[1]))
+            assertThat(true).isEqualTo(postList.contains(postList[0]))
+            assertThat(true).isEqualTo(postList.contains(postList[1]))
             cancel()
         }
     }
@@ -69,8 +78,8 @@ class PostDaoTest {
 
         postDao.getPostListFlow().test {
             val postList = awaitItem()
-            Truth.assertThat("title1").isEqualTo(postList.find { it.id == 1 }?.title)
-            Truth.assertThat("body2").isEqualTo(postList.find { it.id == 2 }?.description)
+            assertThat("title1").isEqualTo(postList.find { it.id == 1 }?.title)
+            assertThat("body2").isEqualTo(postList.find { it.id == 2 }?.description)
             cancel()
         }
 
@@ -79,8 +88,10 @@ class PostDaoTest {
 
         postDao.getPostListFlow().test {
             val postList = awaitItem()
-            Truth.assertThat("1title").isEqualTo(postList.find { it.id == 1}?.title)
-            Truth.assertThat("2post").isEqualTo(postList.find { it.id == 2 }?.description)
+            assertThat("1title").isEqualTo(postList.find { it.id == 1}?.updatedTitle)
+            assertThat(true).isEqualTo(postList.find { it.id == 1}?.isTitleUpdated)
+            assertThat("2post").isEqualTo(postList.find { it.id == 2 }?.updatedDescription)
+            assertThat(true).isEqualTo(postList.find { it.id == 2}?.isDescriptionUpdated)
             cancel()
         }
     }
