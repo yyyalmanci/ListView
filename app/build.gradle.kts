@@ -52,6 +52,7 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
 }
 
@@ -87,6 +88,8 @@ dependencies {
     implementation(libs.navigation.fragment)
 
     implementation(libs.coroutines)
+
+    implementation(libs.coil)
 
     //loging
     implementation(libs.timber)

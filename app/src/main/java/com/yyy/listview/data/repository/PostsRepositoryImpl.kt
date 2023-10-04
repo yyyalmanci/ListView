@@ -26,11 +26,11 @@ class PostsRepositoryImpl @Inject constructor(
             try {
                 val response = remoteDataSource.fetchPostList()
                 if (response.isSuccessful) {
-                    response.body()?.posts?.let { postsRemoteList ->
-                        val remotePosts = postsRemoteList.map {
+                    response.body()?.let { postsRemoteList ->
+                        val listPostEntity = postsRemoteList.map {
                             it.toPostEntity()
                         }
-                        localDataSource.insertPosts(remotePosts)
+                        localDataSource.insertPosts(listPostEntity)
                         Resource.Success(Unit)
                     } ?: Resource.Failure(Throwable("Post List Empty"))
                 } else {

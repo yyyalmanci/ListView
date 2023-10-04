@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">listView</string>
+    <string name="error_connection_list">Please check your internet connection for up to date data</string>
 </resources>
