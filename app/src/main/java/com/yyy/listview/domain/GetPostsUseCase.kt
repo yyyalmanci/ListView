@@ -13,7 +13,6 @@ import javax.inject.Inject
 class GetPostsUseCase @Inject constructor(
     private val postsRepository: PostsRepository
 ) {
-
     operator fun invoke(): Flow<Resource<List<PostDomainModel>>> =
         try {
             postsRepository.getPosts().map { posts ->

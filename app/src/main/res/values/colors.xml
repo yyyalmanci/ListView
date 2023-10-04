@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#8F98A6</color>
+    <color name="gray_indicator">#CED1D6</color>
+    <color name="toolbar_color">#6193E6</color>
 </resources>
